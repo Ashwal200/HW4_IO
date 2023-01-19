@@ -1,25 +1,28 @@
-#Dictionery:
-CFLAGS = gcc -c -Wall -g
-FLAG = gcc -Wall -o
+CC = gcc -c
+CFLAGS = -Wall -g
+CLIBSA = ar rcs
 
-#nodes.o : nodes.c nodes.h graph.h
-#	$(CFLAG) nodes.c
-#edges.o : edges.c edges.h graph.h
-#	$(CFLAG) edges.c
-#graph.o: graph.c graph.h nodes.h edges.h
-#	$(CFLAG) graph.c
-#main.o: main.c graph.h nodes.h edges.h
-#	$(CFLAG) main.c
-#graph : edges.o nodes.o graph.o main.o
-#	$(FLAG) graph edges.o nodes.o graph.o main.o
-#
-#all: graph
-#
-#.PHONY:clean
-#
-#clean:
-#	rm *.o graph
+all: graph libstacts.a
 
-all: main
-main: edges.c graph.c nodes.c main.c graph.h
-	gcc -Wall -g -o graph edges.c graph.c nodes.c main.c
+.PHONY:clean
+
+clean:
+	rm -rf *.o *.a graph
+
+graph : main.o libstacts.a
+	gcc -Wall main.o ./libstacts.a -o graph
+
+libstacts.a : edges.o nodes.o graph.o graph.h
+	$(CLIBSA) libstacts.a edges.o nodes.o graph.o
+
+main.o : main.c graph.h
+	$(CC) $(CFLAGS) main.c
+
+edges.o : edges.c graph.h edges.h
+	$(CC) $(CFLAGS) edges.c
+
+nodes.o : nodes.c graph.h
+	$(CC) $(CFLAGS) nodes.c
+
+graph.o : graph.c graph.h
+	$(CC) $(CFLAGS) graph.c
