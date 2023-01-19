@@ -136,7 +136,7 @@ void delete_node_cmd(pNode *head)
         curr_node = curr_node->next;
     }
     delete_node(*head, node_num);
-    printf("the D scanf num is:%d\n", node_num);
+//     printf("the D scanf num is:%d\n", node_num);
     getchar();//*******************************************
 //    printGraph_cmd(*head);
 }
